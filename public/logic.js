@@ -99,7 +99,9 @@ socket.on('message', incoming => {
     isTyping.innerText = "";
     const list = document.getElementById("messages");
     let listItem = document.createElement("li");
-    listItem.innerHTML = '<h6>' + incoming.userName + " says: </h6>" + '<br/>' + '<h5>' + incoming.message + '</h5>';
+    const sanitizedUserName = DOMPurify.sanitize(incoming.userName);
+    const sanitizedMessage = DOMPurify.sanitize(incoming.message);
+    listItem.innerHTML = '<h6>' + sanitizedUserName + " says: </h6>" + '<br/>' + '<h5>' + sanitizedMessage + '</h5>';
     list.appendChild(listItem);
     scrollDown();
 });
@@ -108,7 +110,9 @@ socket.on('existing-messages', (existingMessages) => {
     existingMessages.forEach((msg) => {
         const list = document.getElementById("messages");
         let listItem = document.createElement("li");
-        listItem.innerHTML = '<h6>' + msg.userName + " says: </h6>" + '<br/>' + '<h5>' + msg.message + '</h5>';
+        const sanitizedUserName = DOMPurify.sanitize(msg.userName);
+        const sanitizedMessage = DOMPurify.sanitize(msg.message);
+        listItem.innerHTML = '<h6>' + sanitizedUserName + " says: </h6>" + '<br/>' + '<h5>' + sanitizedMessage + '</h5>';
         list.appendChild(listItem);
     });
 });
@@ -238,4 +242,3 @@ function autocomplete(inp, arr) {
   
 var jokeArray = ["/ 🤡"];
 autocomplete(document.getElementById("message"), jokeArray);
-
